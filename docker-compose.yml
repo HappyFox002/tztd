@@ -1,0 +1,11 @@
+version: "0.1"
+services:
+    postgres:                                           
+        image: postgres
+        restart: always
+        container_name: postgres_tztd
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=tztd040322
+        ports:
+            - "5432:5432"
