@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using tztd.Data;
+using tztd.ViewModels;
 
 namespace tztd.Models {
     /// <summary>
@@ -24,12 +26,21 @@ namespace tztd.Models {
         [MaxLength (60)]
         public string FullName { get; set; }
 
+        [Required]
         public TypeOrgan TypeOrganization { get; set; }
 
         public DateTime DateAppend { get; set; }
 
         public DateTime DateEdit { get; set; }
 
-        public List<Founder> Founders { get; set; }
+        [JsonIgnore]
+        public List<Founder> Founders { get; set; } = new List<Founder>();
+
+        public void UpdateData(ClientModel model) {
+            this.INN = model.INN;
+            this.FullName = model.FullName;
+            this.TypeOrganization = model.TypeOrganization;
+            this.DateEdit = DateTime.Now;
+        }
     }
 }
