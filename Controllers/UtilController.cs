@@ -5,8 +5,8 @@ using tztd.Data;
 namespace tztd.Controllers {
     public class UtilController : Controller {
 
-        [Route("/recreate")]
         [HttpGet]
+        [Route("/recreate")]
         public JsonResult CreateDatabase () {
             string status = "ok";
             using (ApplicationContext app = new ApplicationContext ()) {

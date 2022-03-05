@@ -10,7 +10,7 @@ namespace tztd.Models {
     /// Сущность клиента
     /// </summary>
     [Index ("INN", IsUnique = true, Name = "idxINN")]
-    [Index ("Name", IsUnique = true, Name = "idxNameClient")]
+    [Index ("FullName", IsUnique = true, Name = "idxFullNameClient")]
     [Table ("Clients")]
     public class Client {
         [Key]
@@ -20,8 +20,9 @@ namespace tztd.Models {
         [MaxLength (12)]
         public string INN { get; set; }
 
+        [MinLength(5)]
         [MaxLength (60)]
-        public string Name { get; set; }
+        public string FullName { get; set; }
 
         public TypeOrgan TypeOrganization { get; set; }
 
@@ -29,6 +30,6 @@ namespace tztd.Models {
 
         public DateTime DateEdit { get; set; }
 
-        public List<Founder> Founders { get; set; } = new ();
+        public List<Founder> Founders { get; set; }
     }
 }

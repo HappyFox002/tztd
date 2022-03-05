@@ -10,6 +10,7 @@ namespace tztd.Models {
     /// Сущность учредителя
     /// </summary>
     [Index ("INN", IsUnique = true, Name = "idxINN")]
+    [Index ("FullName", IsUnique = true, Name = "idxFullNameClient")]
     [Table ("Founders")]
     public class Founder {
         [Key]
@@ -19,28 +20,14 @@ namespace tztd.Models {
         [MaxLength (12)]
         public string INN { get; set; }
 
-        [MinLength (4)]
-        [MaxLength (20)]
-        public string Name { get; set; }
-
-        [MinLength (4)]
-        [MaxLength (20)]
-        public string Surname { get; set; }
-
-        [MinLength (4)]
-        [MaxLength (20)]
-        public string Patronomyc { get; set; }
-
-        public string FullName {
-            get {
-                return Surname + " " + Name + " " + Patronomyc;
-            }
-        }
+        [MinLength(5)]
+        [MaxLength (60)]
+        public string FullName {get;set;}
 
         public DateTime DateAppend { get; set; }
 
         public DateTime DateEdit { get; set; }
 
-        public List<Client> Clients { get; set; } = new ();
+        public List<Client> Clients { get; set; }
     }
 }

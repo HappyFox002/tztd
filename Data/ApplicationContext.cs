@@ -5,8 +5,8 @@ using tztd.Models;
 namespace tztd.Data {
     public class ApplicationContext : DbContext {
 
-        public DbSet<Client> Clients;
-        public DbSet<Founder> Founders;
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Founder> Founders { get; set; }
 
         public ApplicationContext () {
             Database.EnsureCreated ();
