@@ -9,7 +9,7 @@ import './main.css';
 
 export default function App() {
 
-    const [FormName, setFormName] = useState("Добавление нового клиента");
+    const [FormName, setFormName] = useState("Панель управления");
     const [FormComponent, setFormComponent] = useState(null);
 
     const HeaderForm = <div className='HFont'>{FormName}</div>;

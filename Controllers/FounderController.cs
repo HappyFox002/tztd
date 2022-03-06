@@ -15,7 +15,7 @@ namespace tztd.Controllers {
         /// </summary>
         /// <param name="model">данные учредителя</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route ("/addfounder")]
         public async Task<JsonResult> AppendFounder (FounderModel model) {
             RequestStatus status;
@@ -45,7 +45,7 @@ namespace tztd.Controllers {
         /// <param name="model">Обновляемые данные</param>
         /// <param name="id">id редактируемой записи</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("/editfounder")]
         public async Task<JsonResult> UpdateFounder(int id, FounderModel model) {
             RequestStatus status;

@@ -17,9 +17,9 @@ namespace tztd.Controllers
         /// <param name="model">Данные добовляемого пользователя</param>
         /// <param name="idsFounder">Список данных пользователей</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("/addclient")]
-        public async Task<JsonResult> AppendFounder(ClientModel model, int[] idsFounder) {
+        public async Task<JsonResult> AppendClient(ClientModel model, int[] idsFounder) {
             RequestStatus status;
 
             if (ModelState.IsValid) {
@@ -53,9 +53,9 @@ namespace tztd.Controllers
         /// <param name="id">id клиента</param>
         /// <param name="model">Данные для обновления</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPost]
         [Route("/editclient")]
-        public async Task<JsonResult> UpdateFounder(int id, ClientModel model) {
+        public async Task<JsonResult> UpdateClient(int id, ClientModel model) {
             RequestStatus status;
 
             if (ModelState.IsValid) {

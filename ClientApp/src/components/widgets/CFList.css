@@ -19,7 +19,7 @@
 
     grid-template-areas: "N . DA"
                         "I . DU"
-                        ". . B";
+                        "B1 . B2";
 }
 
 .List .Item .Text {

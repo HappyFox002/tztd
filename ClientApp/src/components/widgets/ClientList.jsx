@@ -15,7 +15,7 @@ export default function ClientList({clientsUrl, formAction}) {
                 setClients(result);
             }
         )
-    }, []);
+    }, [Clients]);
 
     if (Clients) {
         if(Clients.type == 0)

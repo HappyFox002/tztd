@@ -1,0 +1,20 @@
+.FContainer {
+    width: 100%;
+}
+
+.ValidError {
+    width: 100%;
+    height: auto;
+    font-weight: bold;
+    margin: 5px 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.2em;
+    color: #000;
+    background-color: #f63;
+    border-radius: 5px;
+    text-align: left;
+}

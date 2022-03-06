@@ -1,0 +1,65 @@
+.Input {
+    background-color: transparent;
+    font-size: 1.2em;
+    width: 100%;
+
+    outline: 0;
+    outline-offset: 0;
+    border-width: 0;
+
+    border-bottom: 2px solid white;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    color: white;
+
+    transition: all ease 0.2s;
+}
+
+.Input:focus {
+    color: #ecb843;
+    border-bottom-color: #ecb843;
+    font-style: italic;
+}
+
+.Input[type="number"]::-webkit-outer-spin-button,
+.Input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.Input[type='number'],
+.Input[type="number"]:hover,
+.Input[type="number"]:focus {
+    appearance: none;
+    -moz-appearance: textfield;
+}
+
+.Radio {
+    display: inline-block;
+}
+
+.Radio label {
+    margin: 0 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 2px solid white;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Radio input[type=radio] {
+    display: none;
+}
+
+.Radio input[type=radio]:checked+label {
+    background-color: white;
+    color: #000;
+}
+
+/* Hover */
+.Radio label:hover {
+    background-color: #ecb843;
+    color: #000;
+}
