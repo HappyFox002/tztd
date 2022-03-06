@@ -3,11 +3,11 @@ import Button from '../control/Button';
 
 import './CFList.css';
 import ClientEdit from './ClientEdit';
-import Founderslist from './FoundersList';
+import FoundersList from './FoundersList';
 
 export default function ClientItem({ item, formAction }) {
 
-    const FormFounder = <Founderslist foundersUrl="/getfounderbyclient" clientId={item.id} />
+    const FormFounder = <FoundersList formAction={formAction} foundersUrl="/getfounderbyclient" clientId={item.id} />
     const FormClientEdit = <ClientEdit key={item.id} data={item}/>
 
     const activeFounders = () => {
@@ -17,7 +17,7 @@ export default function ClientItem({ item, formAction }) {
 
     const activeEditClient = () => { 
         if (formAction)
-            formAction("Редактирование " + item.fullName, FormClientEdit)
+            formAction("Редактирование клиента " + item.fullName, FormClientEdit)
     };
 
   return (

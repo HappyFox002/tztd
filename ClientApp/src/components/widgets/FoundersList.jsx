@@ -4,7 +4,7 @@ import CLayout from '../layouts/CLayout';
 import './CFList.css';
 import FounderItem from './FounderItem';
 
-export default function Founderslist({foundersUrl, clientId}){
+export default function Founderslist({formAction, foundersUrl, clientId}){
     const [Founders, setFounders] = useState(null);
 
     const url = foundersUrl + "?" + new URLSearchParams({ id: clientId }).toString();
@@ -26,7 +26,7 @@ export default function Founderslist({foundersUrl, clientId}){
                 <div className='List'>
                 {
                     Founders.response.map((data) =>  
-                        <FounderItem key={data.id} item={ data}/>
+                        <FounderItem formAction={formAction} key={data.id} item={ data}/>
                     )
                 }
             </div>
