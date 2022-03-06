@@ -134,8 +134,6 @@ namespace tztd.Controllers
                 status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Message = "Клиенту добавлены новые учредители" };
                 return Json(status);
             }
-            status = new RequestStatus () { Type = Data.TypeRequest.ERROR, MessageError = "Произошла непредвиденная ошибка" };
-            return Json(status);
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace tztd.Data {
                 .WithMany(f => f.Clients)
                 .UsingEntity(t => t.ToTable("ClientsAndFounders"));
         }
-
+        //Есть проблемы создания (Через раз происходит ошибка. Проверить последовательность вызова методов цыпочки)
         private bool InitData() {
             using (ApplicationContext app = new ApplicationContext()) { 
                 Client c1 = new Client() { INN = "123456789000", FullName = "ИП Аякин Г.В.", TypeOrganization = TypeOrgan.INDIVIDUAL, DateAppend = DateTime.Now.AddHours(1), DateEdit = DateTime.Now.AddHours(1)};

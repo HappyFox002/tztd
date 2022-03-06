@@ -1,0 +1,30 @@
+.ClientList {
+    padding: 5px 0;
+    width: 100%;
+}
+
+.ClientItem {
+    width: calc(100%-20px);
+    min-height: 80px;
+    border-radius: 10px;
+
+    margin: 20px 0;
+    padding: 10px;
+
+    color: #000;
+
+    display: grid;
+    grid-template-columns: 1fr 10px 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    grid-template-areas: "N . DA"
+                        "I . DU";
+}
+
+.ClientItem .Text {
+    text-align: left;
+}
+
+.ClientItem .Date {
+    text-align: right;
+}

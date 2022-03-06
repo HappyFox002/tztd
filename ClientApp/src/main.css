@@ -1,0 +1,39 @@
+/*
+    #000 - black;
+    #0cc - light blue;
+    #f63 - red;
+    #ecb843 - gold;
+    #6fc - auamarine;
+
+    font-family: 'Oswald', sans-serif;
+    font-family: 'Roboto Slab', serif;
+*/
+body {
+    margin: 0;
+    padding: 0;
+
+    background: rgb(22, 31, 43);
+    background: linear-gradient(315deg, rgba(22, 31, 43, 1) 0%, rgba(41, 57, 78, 1) 100%);
+
+    font-family: 'Roboto Slab', serif;
+    color: white;
+    font-size: 1.4em;
+}
+
+.App {
+    width: 100%;
+    min-height: 95vh;
+    margin-top: 5vh;
+
+    display: grid;
+    grid-template-columns: 100px 1fr 100px 1fr 100px;
+    grid-template-rows: 100px 50px 0.98fr;
+
+    grid-template-areas: ". L . H ."
+                        ". L . . ."
+                        ". L . F .";
+}
+
+.HFont {
+    font-family: 'Oswald', sans-serif;
+}
