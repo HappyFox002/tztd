@@ -1,9 +1,9 @@
-.ClientList {
+.List {
     padding: 5px 0;
     width: 100%;
 }
 
-.ClientItem {
+.List .Item {
     width: calc(100%-20px);
     min-height: 80px;
     border-radius: 10px;
@@ -15,16 +15,17 @@
 
     display: grid;
     grid-template-columns: 1fr 10px 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 
     grid-template-areas: "N . DA"
-                        "I . DU";
+                        "I . DU"
+                        ". . B";
 }
 
-.ClientItem .Text {
+.List .Item .Text {
     text-align: left;
 }
 
-.ClientItem .Date {
+.List .Item .Date {
     text-align: right;
 }

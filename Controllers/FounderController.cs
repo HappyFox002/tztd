@@ -108,6 +108,28 @@ namespace tztd.Controllers {
         }
 
         /// <summary>
+        /// Получение списка учредителей клиента
+        /// </summary>
+        /// <param name="id">id клиента</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("/getfounderbyclient")]
+        public async Task<JsonResult> GetFounderByClients(int id) {
+            Console.WriteLine($"id = {id}");
+            RequestStatus status;
+            using (ApplicationContext app = new ApplicationContext()) {
+                var founders = await app.Founders.Include(c => c.Clients).Where(f => f.Clients.Any(c => c.Id == id)).ToListAsync();
+                if (founders.Count > 0)
+                {
+                    status = new RequestStatus() { Type = Data.TypeRequest.ACCEPT, Response=founders, Message = "Список учредителей клиента" };
+                    return Json(status);
+                }
+                status = new RequestStatus() { Type = Data.TypeRequest.ERROR, Response=founders, MessageError = "Не найдено учредителей" };
+                return Json(status);
+            }
+        }
+
+        /// <summary>
         /// Поиск пользователя в системе 
         /// </summary>
         /// <param name="model">данные искомого пользователя</param>

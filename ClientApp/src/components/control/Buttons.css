@@ -1,0 +1,21 @@
+.StandartButton {
+    background-color: #000;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: default;
+
+    transition: all ease 0.2s;
+}
+
+.StandartButton:hover {
+    transform: scale(1.05);
+    background-color: white;
+    color: #000;
+}

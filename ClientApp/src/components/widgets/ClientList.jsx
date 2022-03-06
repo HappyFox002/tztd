@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import CLayout from './../layouts/CLayout';
 import ClientItem from './ClientItem';
 
-import './ClientList.css';
+import './CFList.css';
 
-export default function ClientList({clientsUrl}) {
+export default function ClientList({clientsUrl, formAction}) {
     const [Clients, setClients] = useState(null);
 
     useEffect(() => { 
@@ -12,23 +12,25 @@ export default function ClientList({clientsUrl}) {
         .then(res => res.json())
         .then(
             (result) => {
-                console.log(result.response);
-                setClients(result.response);
+                setClients(result);
             }
         )
     }, []);
 
     if (Clients) {
-        return (
-            <div className='ClientList'>
+        if(Clients.type == 0)
+            return (
+            <div className='List'>
                 {
-                    Clients.map((data) =>  
-                        <ClientItem key={ data.id } item={data}/>
+                    Clients.response.map((data) =>  
+                        <ClientItem formAction={formAction} key={ data.id } item={data}/>
                     )
                 }
             </div>
-        );
+            );
+        else
+            return (<h1 style={{color:"#0cc", marginTop:"20px", fontSize: "1.4em"}}>{Clients.messageError}</h1>);
     } else { 
-        return <div className='ClientList'><CLayout styles={{color:"#0cc", marginTop:"20px", fontSize: "1.4em"}}>Загрузка данных ...</CLayout></div>;
+        return <div className='List'><CLayout styles={{color:"#0cc", marginTop:"20px", fontSize: "1.4em"}}>Загрузка данных ...</CLayout></div>;
     }
 }

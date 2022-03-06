@@ -10,7 +10,15 @@ import './main.css';
 export default function App() {
 
     const [FormName, setFormName] = useState("Добавление нового клиента");
+    const [FormComponent, setFormComponent] = useState(null);
+
     const HeaderForm = <div className='HFont'>{FormName}</div>;
+
+    const ChangeForm = (text, elem) => { 
+        setFormComponent(null);
+        setFormName(text);
+        setFormComponent(elem);
+    };
 
   return (
       <div className='App'>
@@ -18,7 +26,7 @@ export default function App() {
             <VLayout>
                   <h2 className='HFont' style={{ width: "100%", margin: 0, padding: 0 }}>Клиенты</h2>
                   <HLine color="white" />
-                  <ClientList clientsUrl='/getclients'/>
+                  <ClientList noActiveBtn={false} formAction={ChangeForm} clientsUrl='/getclients'/>
             </VLayout>
           </Panel>
           <Panel styles={{ gridArea: "H", color: "#6fc" }}>
@@ -27,7 +35,7 @@ export default function App() {
               </CLayout>
           </Panel>
           <Panel styles={{ gridArea: "F", padding: "20px" }}>
-          
+              {FormComponent}
           </Panel>
       </div>
   )
