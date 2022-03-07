@@ -37,7 +37,7 @@ export default function App() {
 
   return (
       <div className='App'>
-          <Panel styles={{ gridArea: "L", padding: "20px" }}>
+          <Panel styles={{ gridArea: "L", padding: "20px"}}>
               <VLayout>
                   <HLayout styles={{justifyContent: "space-between", height: "50px"}}>
                       <h2 className='HFont' style={{ width: "auto", margin: 0, padding: 0 }}>Клиенты</h2>
