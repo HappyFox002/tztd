@@ -1,21 +1,21 @@
 import React, { useState} from 'react'
-import Button from '../control/Button';
 
 import './CFList.css';
-import './FounderSelectItem.css'
 
-export default function FounderItem({ item, selectAction}) {  
-  const [SelectItem, setSelectItem] = useState(false);
+export default function FounderSelectItem({ item, selectAction, isSelect}) {  
+  const [SelectItem, setSelectItem] = useState(isSelect);
 
   const Select = () => {
-    setSelectItem(!SelectItem);
-    if (selectAction)
-      selectAction(item.id, SelectItem);
+    if (selectAction) {
+      const newSelect = !SelectItem;
+      setSelectItem(newSelect);
+      selectAction(item.id, newSelect);
+    }
   };
 
   const GetStyle = () => { 
     if (!SelectItem) { 
-      return (item.inn.length == 10) ? { backgroundColor: "#6fc" } : { backgroundColor: "#0cc" };
+      return (item.inn.length === 10) ? { backgroundColor: "#6fc" } : { backgroundColor: "#0cc" };
     }
     return { backgroundColor: "#ecb843" };
   };
@@ -29,3 +29,5 @@ export default function FounderItem({ item, selectAction}) {
       </div>
   )
 }
+
+FounderSelectItem.defaultProps = {isSelect : false};

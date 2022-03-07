@@ -1,16 +1,14 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using tztd.Data;
 using tztd.Models;
 using tztd.ViewModels;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 
-namespace tztd.Controllers
-{
-    public class ClientController : Controller
-    {
+namespace tztd.Controllers {
+    public class ClientController : Controller {
         /// <summary>
         ///  Добавление нового клмента в систему
         /// </summary>
@@ -18,33 +16,33 @@ namespace tztd.Controllers
         /// <param name="idsFounder">Список данных пользователей</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/addclient")]
-        public async Task<JsonResult> AppendClient(ClientModel model, int[] idsFounder) {
+        [Route ("/addClient")]
+        public async Task<JsonResult> AppendClient (ClientModel model, int[] idsFounder) {
             RequestStatus status;
 
             if (ModelState.IsValid) {
-                using (ApplicationContext app = new ApplicationContext()) { 
-                    var founders = await app.Founders.Where(f => idsFounder.Contains(f.Id)).ToListAsync();
+                using (ApplicationContext app = new ApplicationContext ()) {
+                    var founders = await app.Founders.Where (f => idsFounder.Contains (f.Id)).ToListAsync ();
 
-                    if (await FindClient(model) > 0) { 
+                    if (await FindClient (model) > 0) {
                         status = new RequestStatus () { Type = Data.TypeRequest.EROOR_EXSISTS, Response = model, MessageError = "В системе уже есть клиент с такими данными" };
-                        return Json(status);
+                        return Json (status);
                     }
 
-                    Client newClient = new Client() { INN = model.INN, FullName = model.FullName, TypeOrganization = model.TypeOrganization };
-                    app.Clients.Add(newClient);
-                    await app.SaveChangesAsync();
+                    Client newClient = new Client () { INN = model.INN, FullName = model.FullName, TypeOrganization = model.TypeOrganization };
+                    app.Clients.Add (newClient);
+                    await app.SaveChangesAsync ();
 
-                    newClient.Founders.AddRange(founders);
-                    await app.SaveChangesAsync();
+                    newClient.Founders.AddRange (founders);
+                    await app.SaveChangesAsync ();
 
-                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=newClient, Message = "Данная запись добавлена в базу данных" };
+                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response = newClient, Message = "Данная запись добавлена в базу данных" };
                     return Json (status);
                 }
             }
 
             status = new RequestStatus () { Type = Data.TypeRequest.ERROR_VALIDATION, Response = model, MessageError = "Ошибка валидации" };
-            return Json(status);
+            return Json (status);
         }
 
         /// <summary>
@@ -54,30 +52,30 @@ namespace tztd.Controllers
         /// <param name="model">Данные для обновления</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/editclient")]
-        public async Task<JsonResult> UpdateClient(int id, ClientModel model) {
+        [Route ("/editClient")]
+        public async Task<JsonResult> UpdateClient (int id, ClientModel model) {
             RequestStatus status;
 
             if (ModelState.IsValid) {
-                using (ApplicationContext app = new ApplicationContext()) { 
-                    if (await FindClient(id)) {
-                        if (!await PermisionUpdate(model, id)) { 
+                using (ApplicationContext app = new ApplicationContext ()) {
+                    if (await FindClient (id)) {
+                        if (!await PermisionUpdate (model, id)) {
                             status = new RequestStatus () { Type = Data.TypeRequest.EROOR_EXSISTS, MessageError = "В системе уже есть запись с такими данными" };
                             return Json (status);
                         }
 
-                        Client clientUpdate = await app.Clients.FirstOrDefaultAsync(c => c.Id == id);
-                        clientUpdate.UpdateData(model);
-                        await app.SaveChangesAsync();
+                        Client clientUpdate = await app.Clients.FirstOrDefaultAsync (c => c.Id == id);
+                        clientUpdate.UpdateData (model);
+                        await app.SaveChangesAsync ();
 
-                        status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=clientUpdate, Message = "Данная запись обновлена в базе данных" };
-                        return Json(status);
+                        status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response = clientUpdate, Message = "Данная запись обновлена в базе данных" };
+                        return Json (status);
                     }
                 }
             }
 
             status = new RequestStatus () { Type = Data.TypeRequest.ERROR_VALIDATION, Response = model, MessageError = "Ошибка валидации" };
-            return Json(status);
+            return Json (status);
         }
 
         /// <summary>
@@ -85,13 +83,13 @@ namespace tztd.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("/getclients")]
-        public async Task<JsonResult> GetClients() {
+        [Route ("/getClients")]
+        public async Task<JsonResult> GetClients () {
             RequestStatus status;
-            using (ApplicationContext app = new ApplicationContext()) {
-                var clients = await app.Clients.ToListAsync();
+            using (ApplicationContext app = new ApplicationContext ()) {
+                var clients = await app.Clients.ToListAsync ();
                 status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response = clients, Message = "Список клиентов в системе" };
-                return Json(status);
+                return Json (status);
             }
         }
 
@@ -101,17 +99,17 @@ namespace tztd.Controllers
         /// <param name="id">id клиента</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("/getclientfounders")]
-        public async Task<JsonResult> GetClientFounders(int id) {
+        [Route ("/getClientFounders")]
+        public async Task<JsonResult> GetClientFounders (int id) {
             RequestStatus status;
-            using (ApplicationContext app = new ApplicationContext()) {
-                if (await FindClient(id)) {
-                    Client client = await app.Clients.Include(c => c.Founders).FirstOrDefaultAsync(c => c.Id == id);
-                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=client.Founders, Message = "Запрошенные учредители" };
-                    return Json(status);
+            using (ApplicationContext app = new ApplicationContext ()) {
+                if (await FindClient (id)) {
+                    Client client = await app.Clients.Include (c => c.Founders).FirstOrDefaultAsync (c => c.Id == id);
+                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response = client.Founders, Message = "Запрошенные учредители" };
+                    return Json (status);
                 }
                 status = new RequestStatus () { Type = Data.TypeRequest.ERROR, MessageError = "Данного клиента в системе не найдено" };
-                return Json(status);
+                return Json (status);
             }
         }
 
@@ -121,23 +119,33 @@ namespace tztd.Controllers
         /// <param name="id">id клиента</param>
         /// <param name="ids">id учредителей</param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("/addfoundertoclient")]
-        public async Task<JsonResult> AddFoundersToClient(int id, int[] ids) { 
+        [HttpPost]
+        [Route ("/updateFoundersClient")]
+        public async Task<JsonResult> AddFoundersToClient (int id, int[] idsAdd, int[] idsRemove) {
             RequestStatus status;
-            using (ApplicationContext app = new ApplicationContext()) {
-                if (!await FindClient(id)) { 
+            using (ApplicationContext app = new ApplicationContext ()) {
+                if (!await FindClient (id)) {
                     status = new RequestStatus () { Type = Data.TypeRequest.ERROR, MessageError = "Не найден пользователь в базе данных" };
-                    return Json(status);
+                    return Json (status);
                 }
-                
-                Client client = await app.Clients.FirstOrDefaultAsync(c => c.Id == id);
-                var founders = await app.Founders.Where(f => ids.Contains(f.Id)).ToListAsync();
-                client.Founders.AddRange(founders);
-                await app.SaveChangesAsync();
+
+                Client client = await app.Clients.Include (c => c.Founders).FirstOrDefaultAsync (c => c.Id == id);
+                var foundersDel = await app.Founders.Where (f => idsRemove.Contains (f.Id)).ToListAsync ();
+
+                foreach (var founderRemove in foundersDel) {
+                    if (client.Founders.Contains (founderRemove))
+                        client.Founders.Remove (founderRemove);
+                }
+
+                await app.SaveChangesAsync ();
+
+                var founders = await app.Founders.Where (f => idsAdd.Contains (f.Id)).ToListAsync ();
+                client.Founders.AddRange (founders);
+
+                await app.SaveChangesAsync ();
 
                 status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Message = "Клиенту добавлены новые учредители" };
-                return Json(status);
+                return Json (status);
             }
         }
 
@@ -146,10 +154,10 @@ namespace tztd.Controllers
         /// </summary>
         /// <param name="model">Данные искомого пользователя</param>
         /// <returns></returns>
-        private async Task<int> FindClient(ClientModel model){
-            using (ApplicationContext app = new ApplicationContext()) {
-                Client client = await app.Clients.FirstOrDefaultAsync(c => c.INN == model.INN || c.FullName == model.FullName);
-                if(client != null)
+        private async Task<int> FindClient (ClientModel model) {
+            using (ApplicationContext app = new ApplicationContext ()) {
+                Client client = await app.Clients.FirstOrDefaultAsync (c => c.INN == model.INN || c.FullName == model.FullName);
+                if (client != null)
                     return client.Id;
             }
             return -1;
@@ -161,10 +169,10 @@ namespace tztd.Controllers
         /// <param name="model">Данные для обновления</param>
         /// <param name="permissionId">не участвующий id</param>
         /// <returns></returns>
-        private async Task<bool> PermisionUpdate(ClientModel model, int permissionId) { 
-            using(ApplicationContext app = new ApplicationContext()){
-                var clients = await app.Clients.Where(c => (c.INN == model.INN || c.FullName == model.FullName) && c.Id != permissionId).ToListAsync();
-                return clients.Count() == 0;
+        private async Task<bool> PermisionUpdate (ClientModel model, int permissionId) {
+            using (ApplicationContext app = new ApplicationContext ()) {
+                var clients = await app.Clients.Where (c => (c.INN == model.INN || c.FullName == model.FullName) && c.Id != permissionId).ToListAsync ();
+                return clients.Count () == 0;
             }
         }
 
@@ -173,8 +181,8 @@ namespace tztd.Controllers
         /// </summary>
         /// <param name="id">id пользователя</param>
         /// <returns></returns>
-        private async Task<bool> FindClient(int id) { 
-            using(ApplicationContext app = new ApplicationContext()){
+        private async Task<bool> FindClient (int id) {
+            using (ApplicationContext app = new ApplicationContext ()) {
                 Client client = await app.Clients.FirstOrDefaultAsync (c => c.Id == id);
                 if (client != null)
                     return true;

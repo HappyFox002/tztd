@@ -25,7 +25,7 @@ export default function App() {
     };
 
     const FormAddClient = <ClientAdd />;
-    const FormFounders = <FoundersList formAction={ChangeForm} allFounders={ true} foundersUrl="/getfounders"/>;
+    const FormFounders = <FoundersList formAction={ChangeForm} allFounders={ true} foundersUrl="/getFounders"/>;
 
     const AddClient = () => { 
         ChangeForm("Добавление клиента", FormAddClient);
@@ -39,14 +39,14 @@ export default function App() {
       <div className='App'>
           <Panel styles={{ gridArea: "L", padding: "20px" }}>
               <VLayout>
-                  <HLayout styles={{justifyContent: "space-between"}}>
+                  <HLayout styles={{justifyContent: "space-between", height: "50px"}}>
                       <h2 className='HFont' style={{ width: "auto", margin: 0, padding: 0 }}>Клиенты</h2>
-                      <Button name="Новый клиент" action={AddClient} styles={{border: "2px solid white", marginLeft: "auto", padding: "5apx", fontSize: "1.2em"}}/>
-                      <Button name="Учредители" action={ViewFounders} styles={{border: "2px solid white", padding: "5px", fontSize: "1.2em"}}/>
+                      <Button name="Добавить" action={AddClient} styles={{border: "2px solid white", marginLeft: "auto", padding: "5px", fontSize: "1em"}}/>
+                      <Button name="Учредители" action={ViewFounders} styles={{border: "2px solid white", padding: "5px", fontSize: "1em"}}/>
                   </HLayout>
-                  <HLine color="white"/>
-                  <ClientList noActiveBtn={false} formAction={ChangeForm} clientsUrl='/getclients'/>
-            </VLayout>
+                  <HLine color="white" />
+                  <ClientList styles={{flexGrow: 3}} noActiveBtn={false} formAction={ChangeForm} clientsUrl='/getclients'/>
+              </VLayout>
           </Panel>
           <Panel styles={{ gridArea: "H", color: "#6fc" }}>
               <CLayout styles={{ fontSize: "1.6em" }}>

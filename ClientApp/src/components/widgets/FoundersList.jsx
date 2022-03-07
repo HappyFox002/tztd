@@ -35,7 +35,7 @@ export default function FoundersList({formAction, foundersUrl, clientId, allFoun
 
     const panel = (<div>
                     <HLayout styles={{ justifyContent: "space-between" }}>
-                      <Button name="Новый учредитель" action={AddFounder} styles={{border: "2px solid white", marginLeft: "auto", padding: "5apx", fontSize: "1.2em"}}/>
+                      <Button name="Добавить" action={AddFounder} styles={{border: "2px solid white", marginLeft: "auto", padding: "5apx", fontSize: "1.2em"}}/>
                         </HLayout>
                         <HLine color="white" />
                     </div>);

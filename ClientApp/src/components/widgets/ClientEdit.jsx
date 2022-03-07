@@ -7,9 +7,8 @@ import Input from '../control/Input';
 import Radio from '../control/Radio';
 import Button from '../control/Button';
 import FoundersSelectList from './FoundersSelectList';
-import HLine from '../visual/HLine';
 
-export default function ClientEdit({ data }) {
+export default function ClientEdit({ data, formAction }) {
 
     const [FullNameValidTextError, setFullNameValidTextError] = useState("");
     const [FullNameValid, setFullNameValid] = useState(true);
@@ -23,8 +22,6 @@ export default function ClientEdit({ data }) {
     const [EditValidText, setEditValidText] = useState('');
 
     const [TypeOrgan, setTypeOrgan] = useState(data.typeOrganization);
-
-    let FounderIdRemove = [];
 
     const CheckFullNameValidText = (txt) => {
         let check = true;
@@ -98,7 +95,7 @@ export default function ClientEdit({ data }) {
 
         let params = new URLSearchParams({id: data.id, inn : INN, fullname : FullName, typeorganization : TypeOrgan});
 
-        fetch("/editclient", {
+        fetch("/editClient", {
             method: 'POST',
             body: params
         })
@@ -116,23 +113,16 @@ export default function ClientEdit({ data }) {
         )
     }
 
-    useEffect(() => {
-        fetch("/getclientfounders", {
-            method: "POST",
-            body: new URLSearchParams({id: data.id})
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                console.log(result.response);
-                FounderIdRemove = result.response;
-            }
-        )
-    }, [data]);
+    const FoundersSelectListEdit = <FoundersSelectList isEdit={true} clientId={ data.id} url="/getFounders"/>;
 
     const UpdateTypeOrgan = (val) => { 
         setTypeOrgan(val);
     }
+
+    const FormEditSelectItems = () => { 
+        if (formAction)
+            formAction("Изменение учредителей", FoundersSelectListEdit);
+    };
 
     return (
         <form className='FContainer'>
@@ -171,14 +161,9 @@ export default function ClientEdit({ data }) {
                 <HLayout styles={{width: "100%", justifyContent : "center"}}>
                     <Button name="Изменить" action={UpdateDate} styles={{border: "2px solid white", margin: "30px 0" ,width: "60%"}}/>
                 </HLayout>
-                <HLine color="white" />
                 <HLayout styles={{width: "100%", justifyContent : "center"}}>
-                    <Button name="Добавить учредителей"  styles={{border: "2px solid white", marginTop: "30px" ,width: "60%"}}/>
+                    <Button name="Изменить учредителей" action={FormEditSelectItems} styles={{border: "2px solid white", width: "60%"}}/>
                 </HLayout>
-                <HLayout styles={{ justifyContent: "space-between", marginTop: "10px" }}>
-                    <h2 className='HFont' style={{ width: "auto", margin: 0, padding: 0 }}>Выбор учредителей</h2>
-                </HLayout>
-                <FoundersSelectList url="/getfounders" selectIds={FounderIdRemove} />
             </VLayout>
         </form>
     )

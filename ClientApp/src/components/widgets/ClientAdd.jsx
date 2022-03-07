@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import VLayout from '../layouts/VLayout';
 import HLayout from '../layouts/HLayout';
 
@@ -24,12 +24,15 @@ export default function ClientAdd() {
 
     const [TypeOrgan, setTypeOrgan] = useState(0);
 
-    let IdFounders = [];
+    const [IdFounders, setIdFounders] = useState([]);
 
     const UpdateIds = (ids) => { 
-        IdFounders = ids;
-        console.log(IdFounders);
+        setIdFounders(ids);
     };
+
+    useEffect(() => { 
+        console.log("AddClient " + IdFounders.toString());
+    }, [IdFounders]);
 
     const CheckFullNameValidText = (txt) => {
         let check = true;
@@ -109,15 +112,13 @@ export default function ClientAdd() {
         setAddValid(true);
         setAddValidText("");
 
-        //let def = { inn: INN, fullname: FullName, typeorganization: TypeOrgan, idsFounder : IdFounders.map((id) => id) };
-        //console.log(def);
         let params = new URLSearchParams({ inn: INN, fullname: FullName, typeorganization: TypeOrgan });
         IdFounders.forEach(function(item) {
             params.append("idsfounder", item);
         });
         console.log(params.toString());
 
-        fetch("/addclient", {
+        fetch("/addClient", {
             method: 'POST',
             body: params
         })

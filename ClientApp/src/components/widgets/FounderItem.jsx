@@ -4,7 +4,7 @@ import Button from '../control/Button';
 import './CFList.css';
 import FounderEdit from './FounderEdit';
 
-export default function FounderItem({formAction, item }) {
+export default function FounderItem({formAction, item}) {
     const FormFounderEdit = <FounderEdit key={item.id} data={item}/>
 
     const activeEditFounder = () => { 
@@ -14,7 +14,7 @@ export default function FounderItem({formAction, item }) {
     };
   
   return (
-    <div className='Item' style={(item.inn.length == 10) ? { backgroundColor: "#6fc" } : { backgroundColor: "#0cc" }}>
+    <div className='Item' style={(item.inn.length === 10) ? { backgroundColor: "#6fc" } : { backgroundColor: "#0cc" }}>
           <span className='Text' style={{ gridArea: "N" }}>{ item.fullName }</span>
           <span className='Text' style={{ gridArea: "I" }}>Инн: { item.inn }</span>
           <span className='Date' style={{ gridArea: "DA" }}>Добавлено: { new Date(item.dateAppend).toLocaleString("ru") }</span>

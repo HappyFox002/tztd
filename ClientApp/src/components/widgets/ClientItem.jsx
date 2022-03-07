@@ -7,8 +7,8 @@ import FoundersList from './FoundersList';
 
 export default function ClientItem({ item, formAction }) {
 
-    const FormFounder = <FoundersList formAction={formAction} foundersUrl="/getfounderbyclient" clientId={item.id} />
-    const FormClientEdit = <ClientEdit key={item.id} data={item}/>
+    const FormFounder = <FoundersList formAction={formAction} foundersUrl="/getFounderByClient" clientId={item.id} />
+    const FormClientEdit = <ClientEdit formAction={formAction} key={item.id} data={item}/>
 
     const activeFounders = () => {
         if(formAction)

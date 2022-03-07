@@ -80,7 +80,7 @@ export default function FounderEdit({ data }) {
 
         let params = new URLSearchParams({id: data.id, inn : INN, fullname : FullName });
 
-        fetch("/editfounder", {
+        fetch("/editFounder", {
             method: 'POST',
             body: params
         })

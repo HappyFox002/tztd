@@ -80,7 +80,7 @@ export default function FounderAdd() {
 
         let params = new URLSearchParams({inn : INN, fullname : FullName});
 
-        fetch("/addfounder", {
+        fetch("/addFounder", {
             method: 'POST',
             body: params
         })
