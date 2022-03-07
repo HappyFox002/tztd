@@ -4,7 +4,7 @@ export default function HLine({ color }) {
     
     const styles = {
         width: "100%",
-        borderBottom: "2px solid "+color
+        borderBottom: "2px solid " + color
     };
 
   return (

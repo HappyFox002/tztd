@@ -4,7 +4,7 @@ import ClientItem from './ClientItem';
 
 import './CFList.css';
 
-export default function ClientList({clientsUrl, formAction}) {
+export default function ClientList({clientsUrl, formAction, styles}) {
     const [Clients, setClients] = useState(null);
 
     useEffect(() => { 
@@ -20,7 +20,7 @@ export default function ClientList({clientsUrl, formAction}) {
     if (Clients) {
         if(Clients.type == 0)
             return (
-            <div className='List'>
+            <div className='List' style={styles}>
                 {
                     Clients.response.map((data) =>  
                         <ClientItem formAction={formAction} key={ data.id } item={data}/>

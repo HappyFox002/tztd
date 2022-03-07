@@ -5,7 +5,9 @@ import HLayout from './components/layouts/HLayout';
 import VLayout from './components/layouts/VLayout';
 import Panel from './components/supporting/Panel';
 import HLine from './components/visual/HLine';
+import ClientAdd from './components/widgets/ClientAdd';
 import ClientList from './components/widgets/ClientList';
+import FoundersList from './components/widgets/FoundersList';
 
 import './main.css';
 
@@ -22,21 +24,27 @@ export default function App() {
         setFormComponent(elem);
     };
 
-    const FormAddClient = <h1>Добавление клиента</h1>;
+    const FormAddClient = <ClientAdd />;
+    const FormFounders = <FoundersList formAction={ChangeForm} allFounders={ true} foundersUrl="/getfounders"/>;
 
     const AddClient = () => { 
         ChangeForm("Добавление клиента", FormAddClient);
     }
 
+    const ViewFounders = () => {
+        ChangeForm("Учредители", FormFounders);
+    };
+
   return (
       <div className='App'>
           <Panel styles={{ gridArea: "L", padding: "20px" }}>
               <VLayout>
-                  <HLayout>
-                      <h2 className='HFont' style={{ width: "100%", margin: 0, padding: 0 }}>Клиенты</h2>
-                      <Button name="+" action={AddClient} styles={{border: "2px solid white", padding: "10px" ,width: "20px", height: "20px", fontSize: "1.2em"}}/>
+                  <HLayout styles={{justifyContent: "space-between"}}>
+                      <h2 className='HFont' style={{ width: "auto", margin: 0, padding: 0 }}>Клиенты</h2>
+                      <Button name="Новый клиент" action={AddClient} styles={{border: "2px solid white", marginLeft: "auto", padding: "5apx", fontSize: "1.2em"}}/>
+                      <Button name="Учредители" action={ViewFounders} styles={{border: "2px solid white", padding: "5px", fontSize: "1.2em"}}/>
                   </HLayout>
-                  <HLine color="white" />
+                  <HLine color="white"/>
                   <ClientList noActiveBtn={false} formAction={ChangeForm} clientsUrl='/getclients'/>
             </VLayout>
           </Panel>

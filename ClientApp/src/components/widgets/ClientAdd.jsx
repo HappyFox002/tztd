@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import VLayout from '../layouts/VLayout';
 import HLayout from '../layouts/HLayout';
 
@@ -6,25 +6,30 @@ import './Forms.css';
 import Input from '../control/Input';
 import Radio from '../control/Radio';
 import Button from '../control/Button';
-import FoundersSelectList from './FoundersSelectList';
 import HLine from '../visual/HLine';
+import FoundersSelectList from './FoundersSelectList';
 
-export default function ClientEdit({ data }) {
+export default function ClientAdd() {
 
     const [FullNameValidTextError, setFullNameValidTextError] = useState("");
     const [FullNameValid, setFullNameValid] = useState(true);
-    const [FullName, setFullName] = useState(data.fullName);
+    const [FullName, setFullName] = useState('');
 
     const [INNValidTextError, setINNValidTextError] = useState("");
     const [INNValid, setINNValid] = useState(true);
-    const [INN, setINN] = useState(data.inn);
+    const [INN, setINN] = useState('');
 
-    const [EditValid, setEditValid] = useState(true);
-    const [EditValidText, setEditValidText] = useState('');
+    const [AddValid, setAddValid] = useState(true);
+    const [AddValidText, setAddValidText] = useState('');
 
-    const [TypeOrgan, setTypeOrgan] = useState(data.typeOrganization);
+    const [TypeOrgan, setTypeOrgan] = useState(0);
 
-    let FounderIdRemove = [];
+    let IdFounders = [];
+
+    const UpdateIds = (ids) => { 
+        IdFounders = ids;
+        console.log(IdFounders);
+    };
 
     const CheckFullNameValidText = (txt) => {
         let check = true;
@@ -76,29 +81,43 @@ export default function ClientEdit({ data }) {
         return check;
     };
 
-    const UpdateDate = () => {
+    const AddDate = () => {
+        CheckFullNameValidText(FullName);
+        CheckINNValidText(INN);
+
         if (!FullNameValid)
             return;
         if(!INNValid)
             return;
 
         if (INN.length == 12 && TypeOrgan == 0) {
-            setEditValid(false);
-            setEditValidText("Юридическое лицо не может иметь 12 значный ИНН");
+            setAddValid(false);
+            setAddValidText("Юридическое лицо не может иметь 12 значный ИНН");
             return;
         }
         if (INN.length == 10 && TypeOrgan == 1) { 
-            setEditValid(false);
-            setEditValidText("Индивидуальный предпрениматель не может иметь 10 значный ИНН");
+            setAddValid(false);
+            setAddValidText("Индивидуальный предпрениматель не может иметь 10 значный ИНН");
+            return;
+        }
+        if (IdFounders.length <= 0) { 
+            setAddValid(false);
+            setAddValidText("Не выбрано не одного учредителя");
             return;
         }
         
-        setEditValid(true);
-        setEditValidText("");
+        setAddValid(true);
+        setAddValidText("");
 
-        let params = new URLSearchParams({id: data.id, inn : INN, fullname : FullName, typeorganization : TypeOrgan});
+        //let def = { inn: INN, fullname: FullName, typeorganization: TypeOrgan, idsFounder : IdFounders.map((id) => id) };
+        //console.log(def);
+        let params = new URLSearchParams({ inn: INN, fullname: FullName, typeorganization: TypeOrgan });
+        IdFounders.forEach(function(item) {
+            params.append("idsfounder", item);
+        });
+        console.log(params.toString());
 
-        fetch("/editclient", {
+        fetch("/addclient", {
             method: 'POST',
             body: params
         })
@@ -109,26 +128,12 @@ export default function ClientEdit({ data }) {
                 if (result.type == 0) {
                     window.location.reload();
                 } else { 
-                    setEditValidText(result.messageError)
-                    setEditValid(false)
+                    setAddValidText(result.messageError)
+                    setAddValid(false)
                 }
             }
         )
     }
-
-    useEffect(() => {
-        fetch("/getclientfounders", {
-            method: "POST",
-            body: new URLSearchParams({id: data.id})
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                console.log(result.response);
-                FounderIdRemove = result.response;
-            }
-        )
-    }, [data]);
 
     const UpdateTypeOrgan = (val) => { 
         setTypeOrgan(val);
@@ -137,14 +142,18 @@ export default function ClientEdit({ data }) {
     return (
         <form className='FContainer'>
             <VLayout>
-                {(!EditValid) && <div className='ValidError'>{EditValidText}</div>}
+                {(!AddValid) && <div className='ValidError'>{AddValidText}</div>}
                 {(!FullNameValid) && <div className='ValidError'>{FullNameValidTextError}</div>}
                 {(!INNValid) && <div className='ValidError'>{INNValidTextError}</div>}
+                <HLayout styles={{width: "100%", justifyContent : "center"}}>
+                    <Button name="Добавить" action={AddDate} styles={{border: "2px solid white", margin: "30px 0" ,width: "60%"}}/>
+                </HLayout>
+                <HLine color="white"/>
                 <HLayout styles={{ alignItems: "center", margin: "10px 0" }}>
                     <span style={{fontSize: "1.2em"}}>Название: </span>
                     <Input
                         name="fullName"
-                        val={data.fullName}
+                        val={FullName}
                         valid={CheckFullNameValidText}
                         textError={FullNameValidTextError}
                         styles={{width: "100%", margin: "0 10px"}}
@@ -154,7 +163,7 @@ export default function ClientEdit({ data }) {
                     <span style={{fontSize: "1.2em"}}>ИНН: </span>
                     <Input
                         name="inn"
-                        val={data.inn}
+                        val={INN}
                         type="number"
                         valid={CheckINNValidText}
                         textError={INNValidTextError}
@@ -168,17 +177,11 @@ export default function ClientEdit({ data }) {
                         <Radio name="typeOrgan" label="Инидивидуальный" value="1" onChange={UpdateTypeOrgan} checked={(TypeOrgan == 1)}/>
                     </HLayout>
                 </HLayout>
-                <HLayout styles={{width: "100%", justifyContent : "center"}}>
-                    <Button name="Изменить" action={UpdateDate} styles={{border: "2px solid white", margin: "30px 0" ,width: "60%"}}/>
-                </HLayout>
-                <HLine color="white" />
-                <HLayout styles={{width: "100%", justifyContent : "center"}}>
-                    <Button name="Добавить учредителей"  styles={{border: "2px solid white", marginTop: "30px" ,width: "60%"}}/>
-                </HLayout>
+                <HLine color="white"/>
                 <HLayout styles={{ justifyContent: "space-between", marginTop: "10px" }}>
                     <h2 className='HFont' style={{ width: "auto", margin: 0, padding: 0 }}>Выбор учредителей</h2>
                 </HLayout>
-                <FoundersSelectList url="/getfounders" selectIds={FounderIdRemove} />
+                <FoundersSelectList appendIds={UpdateIds} url="/getfounders"/>
             </VLayout>
         </form>
     )

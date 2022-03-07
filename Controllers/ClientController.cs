@@ -95,14 +95,19 @@ namespace tztd.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("/getclient")]
-        public async Task<JsonResult> GetClient(int id) {
+        /// <summary>
+        /// Получение списка учредителей по id
+        /// </summary>
+        /// <param name="id">id клиента</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("/getclientfounders")]
+        public async Task<JsonResult> GetClientFounders(int id) {
             RequestStatus status;
             using (ApplicationContext app = new ApplicationContext()) {
                 if (await FindClient(id)) {
-                    Client client = await app.Clients.FirstOrDefaultAsync(c => c.Id == id);
-                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=client, Message = "Искомый клиент" };
+                    Client client = await app.Clients.Include(c => c.Founders).FirstOrDefaultAsync(c => c.Id == id);
+                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=client.Founders, Message = "Запрошенные учредители" };
                     return Json(status);
                 }
                 status = new RequestStatus () { Type = Data.TypeRequest.ERROR, MessageError = "Данного клиента в системе не найдено" };

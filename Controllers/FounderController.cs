@@ -23,7 +23,7 @@ namespace tztd.Controllers {
             if (ModelState.IsValid) {
                 using (ApplicationContext app = new ApplicationContext ()) {
                     if (await FindFounder(model) > 0) { 
-                        status = new RequestStatus () { Type = Data.TypeRequest.EROOR_EXSISTS, MessageError = "Данная запись существует" };
+                        status = new RequestStatus () { Type = Data.TypeRequest.EROOR_EXSISTS, MessageError = "В системе имеется запись с такмим данными" };
                         return Json (status);
                     }
                     Founder newFounder = new Founder() { INN = model.INN, FullName = model.FullName };
@@ -88,26 +88,6 @@ namespace tztd.Controllers {
         }
 
         /// <summary>
-        /// Определённый учредитель в системе
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("/getfounder")]
-        public async Task<JsonResult> GetFounder(int id) {
-            RequestStatus status;
-            using (ApplicationContext app = new ApplicationContext()) {
-                if (await FindFounder(id)) {
-                    Founder founder = await app.Founders.FirstOrDefaultAsync(f => f.Id == id);
-                    status = new RequestStatus () { Type = Data.TypeRequest.ACCEPT, Response=founder, Message = "Искомый учредитель" };
-                    return Json(status);
-                }
-                status = new RequestStatus () { Type = Data.TypeRequest.ERROR, MessageError = "Данного учредителя в системе не найдено" };
-                return Json(status);
-            }
-        }
-
-        /// <summary>
         /// Получение списка учредителей клиента
         /// </summary>
         /// <param name="id">id клиента</param>
@@ -115,7 +95,6 @@ namespace tztd.Controllers {
         [HttpGet]
         [Route("/getfounderbyclient")]
         public async Task<JsonResult> GetFounderByClients(int id) {
-            Console.WriteLine($"id = {id}");
             RequestStatus status;
             using (ApplicationContext app = new ApplicationContext()) {
                 var founders = await app.Founders.Include(c => c.Clients).Where(f => f.Clients.Any(c => c.Id == id)).ToListAsync();
